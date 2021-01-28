@@ -27,25 +27,35 @@ $(function () {
     // 监听注册表单提交事件
     $('#reg').submit(function (e) {
         e.preventDefault();
-        $.ajax({
-            url: '/api/reguser',
-            method: 'post',
-            data: {
-                username: $('#reg [name=username]').val(),
-                password: $('#reg [name=password]').val(),
-            },
-            success: function (res) {
-                if (res.status !== 0) return layer.msg(res.message);
-                layer.msg('注册成功', {
-                    icon: 1,
-                    time: 1000,
-                }, function () {
-                    $('#link-login').click();
-                })
-            }
-        })
-    });
+        // $.ajax({
+        //     url: '/api/reguser',
+        //     method: 'post',
+        //     data: {
+        //         username: $('#reg [name=username]').val(),
+        //         password: $('#reg [name=password]').val(),
+        //     },
+        //     success: function (res) {
+        //         if (res.status !== 0) return layer.msg(res.message);
+        //         layer.msg('注册成功', {
+        //             icon: 1,
+        //             time: 1000,
+        //         }, function () {
+        //             $('#link-login').click();
+        //         })
+        //     }
 
+        axios.post('/api/reguser',
+            $(this).serialize()
+        ).then(function (res) {
+            if (res.status !== 0) return layer.msg(res.message);
+            layer.msg('注册成功', {
+                icon: 1,
+                time: 1000,
+            }, function () {
+                $('#link-login').click();
+            })
+        })
+    })
     // 监听登录表单提交事件
     $('#login').submit(function (e) {
         e.preventDefault();
