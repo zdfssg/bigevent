@@ -46,4 +46,21 @@ $(function () {
         })
     });
 
+    // 监听登录表单提交事件
+    $('#login').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: 'http://ajax.frontend.itheima.net/api/login',
+            method: 'post',
+            data: {
+                username: $('#login [name=username]').val(),
+                password: $('#login [name=password]').val(),
+            },
+            success: function (res) {
+                if (res.status !== 0) return layer.msg(res.message);
+                location.href = '/index.html'
+            }
+        })
+    })
+
 })
