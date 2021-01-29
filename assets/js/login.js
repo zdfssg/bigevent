@@ -43,18 +43,18 @@ $(function () {
         //             $('#link-login').click();
         //         })
         //     }
-
-        axios.post('/api/reguser',
-            $(this).serialize()
-        ).then(function (res) {
-            if (res.status !== 0) return layer.msg(res.message);
-            layer.msg('注册成功', {
-                icon: 1,
-                time: 1000,
-            }, function () {
-                $('#link-login').click();
+        var username = $('#reg [name=username]').val();
+        var password = $('#reg [name=password]').val()
+        axios.post('/api/reguser', $(this).serialize())
+            .then(function (res) {
+                if (res.status !== 0) return layer.msg(res.message);
+                layer.msg('注册成功', {
+                    icon: 1,
+                    time: 1000,
+                }, function () {
+                    $('#link-login').click();
+                })
             })
-        })
     })
     // 监听登录表单提交事件
     $('#login').submit(function (e) {
@@ -70,7 +70,12 @@ $(function () {
             success: function (res) {
                 if (res.status !== 0) return layer.msg(res.message);
                 localStorage.setItem('token', res.token)
-                location.href = '/index.html'
+                layer.msg('登录成功', {
+                    icon: 1,
+                    time: 1000,
+                }, function () {
+                    location.href = '/index.html'
+                })
             }
         })
     })
