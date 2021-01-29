@@ -60,7 +60,12 @@ $(function () {
             success: function (res) {
                 if (res.status !== 0) return layer.msg(res.message);
                 localStorage.setItem('token', res.token)
-                location.href = '/index.html'
+                layer.msg('登录成功', {
+                    icon: 1,
+                    time: 1000,
+                }, function () {
+                    location.href = '/index.html'
+                })
             }
         })
     })
