@@ -1,4 +1,4 @@
-$(function() {
+/* $(function() {
   var layer = layui.layer
 
   // 1.1 获取裁剪区域的 DOM 元素
@@ -61,6 +61,65 @@ $(function() {
         }
         layer.msg('更换头像成功！')
         window.parent.getUserInfo()
+      }
+    })
+  })
+})
+ */
+$(function () {
+  // 获取裁剪区域的 DOM 元素
+  var $image = $('#image')
+  // 创建裁剪区域
+  $image.cropper({
+    aspectRatio: 1,
+    preview: '.img-preview'
+  })
+  // 点击上传用户选择图片
+  $('#btnChooseImage').click(function () {
+    $('#file').click();
+  })
+  $('#file').change(function () {
+    // 拿到用户上传的文件
+    var files = this.files;
+    if (files.length > 0) {
+      // 把文件转换成url的形式
+      var imgURL = URL.createObjectURL(files[0]);
+    } else {
+      layer.msg('请选择图片 !')
+    }
+    // console.log(imgURL);
+    // 替换裁剪区图片
+    // $image.cropper('replace', imgURL)
+    // 3. 重新初始化裁剪区域
+    $image
+      .cropper('destroy') // 销毁旧的裁剪区域
+      .prop('src', imgURL) // 重新设置图片路径
+      .cropper({
+        aspectRatio: 1,
+        preview: '.img-preview'
+      }) // 重新初始化裁剪区域
+  });
+
+  $('#btnUpload').click(function () {
+    // 拿到用户裁剪之后的头像
+    var dataURL = $image.cropper('getCroppedCanvas', {
+      // 创建一个 Canvas 画布
+      width: 100,
+      height: 100
+    }).toDataURL('image/png') // 将 Canvas 画布上的内容，转化为 base64 格式的字符串
+    // console.log(dataURL);
+    // 构建查询参数
+    const params = new URLSearchParams();
+    params.append('avatar',dataURL)
+    axios.post('/my/update/avatar', params).then(function (res) {
+      if (res.status !== 0) {
+        layer.msg(res.message)
+      } else {
+        layer.msg(res.message, {
+          time: 500
+        }, function () {
+          window.parent.getUserInfo()
+        })
       }
     })
   })
