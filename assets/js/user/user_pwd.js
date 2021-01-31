@@ -58,7 +58,8 @@ $(function () {
                 layer.msg('修改密码成功,请重新登录!', {
                     time: 500
                 }, function () {
-                    window.parent.document.querySelector('#exit').click();
+                    window.parent.location.href = "/login.html"
+                    localStorage.removeItem('token')
                 })
             };
         })
